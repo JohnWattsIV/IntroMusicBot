@@ -1,4 +1,5 @@
 const BaseCommand = require('../../utils/structures/BaseCommand');
+const set = require('../../utils/updater');
 
 module.exports = class SetCommand extends BaseCommand {
   constructor() {
@@ -14,7 +15,7 @@ module.exports = class SetCommand extends BaseCommand {
     var urlRegex = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
     //regex from https://stackoverflow.com/questions/8318236/regex-pattern-for-hhmmss-time-string
     var startRegex = /(?:(?:([01]?\d|2[0-3]):)?([0-5]?\d):)?([0-5]?\d)$/gi;
-    var somethingSet= false;
+    var urlSet= false, startSet = false, lenSet = false, volSet = false;
 
     for(var i = 0; i < args.length; i++)
     {
@@ -28,7 +29,8 @@ module.exports = class SetCommand extends BaseCommand {
             }
             else
             {
-                somethingSet = true;
+                set.updateDynamo(message.author.id, "url", urlMatch);
+                urlSet = true;
             }
         }
         else if(args[i] == 'start')
@@ -55,7 +57,8 @@ module.exports = class SetCommand extends BaseCommand {
                 {
                     startTimeSeconds = parseInt(timeArray[0]);
                 }
-                somethingSet = true;
+                set.updateDynamo(message.author.id, "start", startTimeSeconds);
+                startSet = true;
             }
         }
         else if(args[i] == 'len')
@@ -67,7 +70,8 @@ module.exports = class SetCommand extends BaseCommand {
             }
             else
             {
-                somethingSet = true;
+                set.updateDynamo(message.author.id, "len", length);
+                lenSet = true;
             }
         }
         else if(args[i] == 'vol')
@@ -79,11 +83,12 @@ module.exports = class SetCommand extends BaseCommand {
             }
             else
             {
-                somethingSet = true;
+                set.updateDynamo(message.author.id, "vol", volume);
+                volSet = true;
             }
         }
     }
-    if(somethingSet)
+    if(urlSet || startSet || lenSet || volSet)
     {
         return message.channel.send(`Success, your intro music has been updated`);
     }
