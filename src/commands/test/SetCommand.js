@@ -1,5 +1,5 @@
 const BaseCommand = require('../../utils/structures/BaseCommand');
-const set = require('../../utils/updater');
+const dbUpdater = require('../../utils/updater');
 
 module.exports = class SetCommand extends BaseCommand {
   constructor() {
@@ -29,7 +29,7 @@ module.exports = class SetCommand extends BaseCommand {
             }
             else
             {
-                set.updateDynamo(message.author.id, "url", urlMatch);
+                dbUpdater.updateDynamo(message.author.id, "url", urlMatch);
                 urlSet = true;
             }
         }
@@ -57,7 +57,7 @@ module.exports = class SetCommand extends BaseCommand {
                 {
                     startTimeSeconds = parseInt(timeArray[0]);
                 }
-                set.updateDynamo(message.author.id, "start", startTimeSeconds);
+                dbUpdater.updateDynamo(message.author.id, "start", startTimeSeconds);
                 startSet = true;
             }
         }
@@ -70,7 +70,7 @@ module.exports = class SetCommand extends BaseCommand {
             }
             else
             {
-                set.updateDynamo(message.author.id, "len", length);
+                dbUpdater.updateDynamo(message.author.id, "len", length);
                 lenSet = true;
             }
         }
@@ -83,7 +83,7 @@ module.exports = class SetCommand extends BaseCommand {
             }
             else
             {
-                set.updateDynamo(message.author.id, "vol", volume);
+                dbUpdater.updateDynamo(message.author.id, "vol", volume);
                 volSet = true;
             }
         }
