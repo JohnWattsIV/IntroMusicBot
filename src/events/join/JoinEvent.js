@@ -7,12 +7,12 @@ module.exports = class JoinEvent extends BaseEvent {
   }
   
   async run(client, oldState, newState) {
-      let newUserChannel = newState.voiceChannel;
-      let oldUserChannel = oldState.voiceChannel;
-
+      let newUserChannel = newState.channel;
+      let oldUserChannel = oldState.channel;
         //user has joined a channel
       if(oldUserChannel == undefined && newUserChannel != undefined) {
-           var data = dbReader.readDynamo(newState.id);
+           var data = await dbReader.readDynamo(newState.id);
+
            //TODO call play function using parameters from 'data' map or
            //play from within this event
 

@@ -20,7 +20,7 @@ function readDynamo(Id)
         }
     };
 
-    docClient.update(params, function(err, data) {
+    docClient.get(params, function(err, data) {
         if(err) {
             console.error("Unable to read items. Error JSON:", JSON.stringify(err, null, 2));
         } else {
