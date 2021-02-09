@@ -20,14 +20,17 @@ function readDynamo(Id)
         }
     };
 
-    docClient.get(params, function(err, data) {
+    return new Promise(function (resolve, reject) {
+        docClient.get(params, function(err, data) {
         if(err) {
             console.error("Unable to read items. Error JSON:", JSON.stringify(err, null, 2));
+            reject("Error");
         } else {
             console.log("ReadItem succeeded:", JSON.stringify(data, null, 2));
-            return data.Item;
+            resolve(data.Item);
         }
     });
+});
 }
 
 module.exports = { readDynamo };
