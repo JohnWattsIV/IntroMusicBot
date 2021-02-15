@@ -1,5 +1,7 @@
 const BaseEvent = require('../../utils/structures/BaseEvent');
 const dbReader = require('../../utils/reader');
+const download = require('../../utils/downloader');
+const convert = require('../../utils/converter');
 const { VoiceChannel } = require('discord.js');
 const ytdl = require('ytdl-core');
 
@@ -20,26 +22,31 @@ module.exports = class JoinEvent extends BaseEvent {
              return 0;
            }
            var volume = parseInt(data['vol']);
-           var startTime = data['beg'].toString();
            var length = parseInt(data['len']);
-           var song = data['vid'];
+           
+           var downloaded = await download.downloader(data, newState.id);
+           var converted = await convert.converter(data, newState.id);
 
+           if(downloaded == "Error" || converted == "Error")
+           {
+             console.log("error: problem downloading video");
+             return 0;
+           }
            var voiceChannel = newUserChannel;
            var connection = await voiceChannel.join();
            
-           if(startTime) {
-             song = song + "&t=" + startTime;
-            var stream = ytdl(song, {filter: 'audioonly'});
-           }
-           else {
-             var stream = ytdl(song, {filter: 'audioonly'});
+           if(!length)
+           {
+             length = 3;
            }
 
+           var path = "../../Desktop/Music/" + newState.id.toString() + ".mp3";
+
            if(volume) {
-            var dispatcher = connection.play(stream, {volume: 0.001+(volume*.00049)});
+            var dispatcher = connection.play(path, {volume: 0.001+(volume*.00049)});
            }
            else {
-            var dispatcher = connection.play(stream, {volume: 0.025});
+            var dispatcher = connection.play(path, {volume: 0.025});
            }
 
            dispatcher.on('start', () => {
