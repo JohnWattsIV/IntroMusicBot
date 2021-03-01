@@ -13,7 +13,9 @@ module.exports = class JoinEvent extends BaseEvent {
   async run(client, oldState, newState) {
       let newUserChannel = newState.channel;
       let oldUserChannel = oldState.channel;
-        //user has joined a channel
+        
+      
+      //user has joined a channel
       if(oldUserChannel == undefined && newUserChannel != undefined) {
            const data = await dbReader.readDynamo(newState.id);
            if(!data)
@@ -59,6 +61,11 @@ module.exports = class JoinEvent extends BaseEvent {
       } //user has left a voice channel
       else if(newUserChannel == undefined) {
 
+          if(oldUserChannel.members.size == 1)
+          {
+            console.log("leaving");
+            var leaveTime = await oldUserChannel.leave();
+          }
           //TODO: if user whose intro is currently playing leaves, stop the music
       }
 
