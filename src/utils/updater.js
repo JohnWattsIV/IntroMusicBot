@@ -11,7 +11,7 @@ const docClient = new AWS.DynamoDB.DocumentClient();
 
 function updateDynamo(Id, fieldToUpdate, newValue)
 {
-    userId = parseInt(Id);
+    userId = Number(Id);
 
     if(fieldToUpdate == 'url')
     {

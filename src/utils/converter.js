@@ -15,7 +15,7 @@ function converter(data, userId) {
         startTime = "0";
     }
 
-    var cmdToLaunch = 'ffmpeg -y -ss ' + startTime + ' -t ' + length + ' -i ../../Desktop/Music/' + userId + '.wav -vn "../../Desktop/Music/' + userId + '.mp3"';
+    var cmdToLaunch = 'ffmpeg -y -ss ' + startTime + ' -t ' + length + ' -i ../../Desktop/Music/' + userId + '.wav -y "../../Desktop/Music/' + userId + '.mp3"';
 
     return new Promise(function (resolve, reject) {
         exec(cmdToLaunch, (err, stdout, stderr) => {

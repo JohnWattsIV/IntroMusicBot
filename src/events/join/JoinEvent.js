@@ -13,7 +13,6 @@ module.exports = class JoinEvent extends BaseEvent {
   async run(client, oldState, newState) {
       let newUserChannel = newState.channel;
       let oldUserChannel = oldState.channel;
-        
       
       //user has joined a channel
       if(oldUserChannel == undefined && newUserChannel != undefined) {
@@ -26,14 +25,14 @@ module.exports = class JoinEvent extends BaseEvent {
            var volume = parseInt(data['vol']);
            var length = parseInt(data['len']);
            
-           var downloaded = await download.downloader(data, newState.id);
-           var converted = await convert.converter(data, newState.id);
+          // var downloaded = await download.downloader(data, newState.id);
+           //var converted = await convert.converter(data, newState.id);
 
-           if(downloaded == "Error" || converted == "Error")
-           {
-             console.log("error: problem downloading video");
-             return 0;
-           }
+           //if(downloaded == "Error" || converted == "Error")
+           //{
+            // console.log("error: problem downloading video");
+             //return 0;
+           //}
            var voiceChannel = newUserChannel;
            var connection = await voiceChannel.join();
            
@@ -41,14 +40,14 @@ module.exports = class JoinEvent extends BaseEvent {
            {
              length = 3;
            }
-
+            console.log(newState.id.toString());
            var path = "../../Desktop/Music/" + newState.id.toString() + ".mp3";
 
            if(volume) {
-            var dispatcher = connection.play(path, {volume: 0.001+(volume*.00049)});
+            var dispatcher = connection.play(path, {volume: 0.001+(volume*.00300)});
            }
            else {
-            var dispatcher = connection.play(path, {volume: 0.025});
+            var dispatcher = connection.play(path, {volume: 0.001+(100*.00300)});
            }
 
            dispatcher.on('start', () => {
@@ -66,7 +65,6 @@ module.exports = class JoinEvent extends BaseEvent {
             console.log("leaving");
             var leaveTime = await oldUserChannel.leave();
           }
-          //TODO: if user whose intro is currently playing leaves, stop the music
       }
 
   }

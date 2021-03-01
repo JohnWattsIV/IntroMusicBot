@@ -1,5 +1,8 @@
 const BaseCommand = require('../../utils/structures/BaseCommand');
 const dbUpdater = require('../../utils/updater');
+const dbReader = require('../../utils/reader');
+const download = require('../../utils/downloader');
+const convert = require('../../utils/converter');
 
 module.exports = class SetCommand extends BaseCommand {
   constructor() {
@@ -90,6 +93,16 @@ module.exports = class SetCommand extends BaseCommand {
     }
     if(urlSet || startSet || lenSet || volSet)
     {
+        const data = await dbReader.readDynamo(message.author.id);
+           
+           var downloaded = await download.downloader(data, message.author.id);
+           var converted = await convert.converter(data, message.author.id);
+
+           if(downloaded == "Error" || converted == "Error")
+           {
+             console.log("error: problem downloading video");
+             return 0;
+           }
         return message.channel.send(`Success, your intro music has been updated`);
     }
 }
